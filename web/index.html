@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydroponic Controller</title>
+    <link rel="stylesheet" href="/app.css">
+    <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🌱 Hydroponic Controller</h1>
+            <div class="status-indicators">
+                <div class="status-item">
+                    <span class="status-label">WiFi:</span>
+                    <span id="wifi-status" class="status-value">Connecting...</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Time:</span>
+                    <span id="time-status" class="status-value">Syncing...</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Sensor Readings -->
+            <section class="sensor-panel">
+                <h2>📊 Sensor Readings</h2>
+                <div class="sensor-grid">
+                    <div class="sensor-card">
+                        <div class="sensor-icon">🌡️</div>
+                        <div class="sensor-info">
+                            <div class="sensor-label">Temperature</div>
+                            <div id="temperature-value" class="sensor-value">--°C</div>
+                        </div>
+                    </div>
+                    <div class="sensor-card">
+                        <div class="sensor-icon">💧</div>
+                        <div class="sensor-info">
+                            <div class="sensor-label">Humidity</div>
+                            <div id="humidity-value" class="sensor-value">--%</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Control Panels -->
+            <section class="control-panels">
+                <!-- Lights Control -->
+                <div class="control-panel">
+                    <div class="panel-header">
+                        <h3>💡 Lights Control</h3>
+                        <div class="device-status">
+                            <span id="lights-status" class="status-indicator">OFF</span>
+                        </div>
+                    </div>
+                    <form id="lights-form" class="control-form">
+                        <div class="form-group">
+                            <label>Schedule:</label>
+                            <div class="time-inputs">
+                                <input type="time" id="lights-start">
+                                <span>to</span>
+                                <input type="time" id="lights-end">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Schedule</button>
+                    </form>
+                </div>
+
+                <!-- Pump Control -->
+                <div class="control-panel">
+                    <div class="panel-header">
+                        <h3>💧 Pump Control</h3>
+                        <div class="device-status">
+                            <span id="pump-status" class="status-indicator">OFF</span>
+                        </div>
+                    </div>
+                    <form id="pump-form" class="control-form">
+                        <div class="form-group">
+                            <label>Mode:</label>
+                            <select id="pump-mode">
+                                <option value="timer">Timer Mode</option>
+                                <option value="humidity">Humidity Control</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Timer Settings:</label>
+                            <div class="number-inputs">
+                                <input type="number" id="pump-on" min="1" max="300" placeholder="ON (sec)">
+                                <span>ON every</span>
+                                <input type="number" id="pump-period" min="60" max="3600" placeholder="Period (sec)">
+                            </div>
+                        </div>
+                        <div class="form-group" id="humidity-controls" style="display: none;">
+                            <label>Humidity Threshold:</label>
+                            <input type="number" id="humidity-threshold" step="0.1" min="0" max="100" placeholder="Threshold (%)">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Settings</button>
+                    </form>
+                </div>
+
+                <!-- Heater Control -->
+                <div class="control-panel">
+                    <div class="panel-header">
+                        <h3>🔥 Heater Control</h3>
+                        <div class="device-status">
+                            <span id="heater-status" class="status-indicator">OFF</span>
+                        </div>
+                    </div>
+                    <form id="heater-form" class="control-form">
+                        <div class="form-group">
+                            <label>Setpoint:</label>
+                            <input type="number" id="heater-setpoint" step="0.1" min="-40" max="80" placeholder="Temperature (°C)">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Setpoint</button>
+                    </form>
+                </div>
+
+                <!-- Fan Control -->
+                <div class="control-panel">
+                    <div class="panel-header">
+                        <h3>🌀 Fan Control</h3>
+                        <div class="device-status">
+                            <span id="fan-status" class="status-indicator">OFF</span>
+                        </div>
+                    </div>
+                    <form id="fan-form" class="control-form">
+                        <div class="form-group">
+                            <label>Manual Control:</label>
+                            <select id="fan-state">
+                                <option value="off">OFF</option>
+                                <option value="on">ON</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Fan</button>
+                        <div class="help-text">Manual control only available between 15-24°C</div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Configuration -->
+            <section class="config-panel">
+                <h2>⚙️ Configuration</h2>
+                <div class="config-actions">
+                    <button id="save-config" class="btn btn-success">💾 Save Configuration</button>
+                    <button id="load-config" class="btn btn-secondary">📁 Load Configuration</button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Toast Notifications -->
+        <div id="toast-container" class="toast-container"></div>
+    </div>
+
+    <script src="/app.js"></script>
+</body>
+</html>

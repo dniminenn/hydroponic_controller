@@ -1,0 +1,34 @@
+## Arduino Nano Classic (ATmega328P)
+
+| Arduino Pin | Physical Pin | ATmega328P Port | Silkscreen |
+|-------------|--------------|-----------------|------------|
+| D0/RX       | 1            | PD0             | D0/RX      |
+| D1/TX       | 2            | PD1             | D1/TX      |
+| RESET       | 3            | PC6             | RESET      |
+| GND         | 4            | GND             | GND        |
+| D2          | 5            | PD2             | D2         |
+| D3          | 6            | PD3             | ~D3        |
+| D4          | 7            | PD4             | D4         |
+| D5          | 8            | PD5             | ~D5        |
+| D6          | 9            | PD6             | ~D6        |
+| D7          | 10           | PD7             | D7         |
+| D8          | 11           | PB0             | D8         |
+| D9          | 12           | PB1             | ~D9        |
+| D10         | 13           | PB2             | ~D10       |
+| D11         | 14           | PB3             | ~D11       |
+| D12         | 15           | PB4             | D12        |
+| D13         | 16           | PB5             | D13        |
+| +3V3        | 17           | -               | +3V3       |
+| AREF        | 18           | AREF            | AREF       |
+| A0/D14      | 19           | PC0             | A0         |
+| A1/D15      | 20           | PC1             | A1         |
+| A2/D16      | 21           | PC2             | A2         |
+| A3/D17      | 22           | PC3             | A3         |
+| A4/D18      | 23           | PC4             | A4         |
+| A5/D19      | 24           | PC5             | A5         |
+| A6          | 25           | ADC6            | A6         |
+| A7          | 26           | ADC7            | A7         |
+| +5V         | 27           | -               | +5V        |
+| RESET       | 28           | PC6             | RESET      |
+| GND         | 29           | GND             | GND        |
+| VIN         | 30           | -               | VIN        |

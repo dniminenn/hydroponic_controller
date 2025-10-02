@@ -1,0 +1,103 @@
+# Build directories
+build/
+cmake-build-*/
+
+# Keep lib directory (critical source code)
+!lib/
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+build/Makefile
+Makefile.cmake
+Makefile2
+CMakeError.log
+CMakeOutput.log
+CMakeRuleHashes.txt
+CMakeDirectoryInformation.cmake
+TargetDirectories.txt
+progress.marks
+cmake.check_cache
+# Keep CMakeLists.txt and important cmake files
+!CMakeLists.txt
+!*.cmake.in
+!pico_sdk_import.cmake
+
+# Compiled binaries
+*.elf
+*.bin
+*.hex
+*.uf2
+*.dis
+*.map
+
+# Object files
+*.o
+*.obj
+*.d
+
+# Generated headers
+*.pio.h
+generated/
+
+# PlatformIO
+.pio/
+.pioenvs/
+.piolibdeps/
+.vscode/.browse.c_cpp.db*
+.vscode/launch.json
+.vscode/ipch
+
+# Arduino IDE
+*.ino.bak
+*.ino.orig
+
+# IDE files
+.vscode/*
+!.vscode/settings.json
+!.vscode/c_cpp_properties.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Backup files
+*.bak
+*.backup
+*.orig
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Node modules (if any web tools)
+node_modules/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb

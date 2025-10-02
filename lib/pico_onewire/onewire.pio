@@ -1,0 +1,95 @@
+; OneWire PIO program for DS18B20 temperature sensor
+; Simple implementation with proper timing
+
+.program onewire
+    ; Reset sequence
+    set pins, 0 [31]      ; Pull low for 480us (480/15 = 32)
+    set pins, 1 [4]       ; Release and wait 70us (70/15 = 4.67)
+    in pins, 1            ; Sample presence pulse
+    set pins, 1 [27]      ; Wait for reset to complete (410us/15 = 27.33)
+
+    ; Write bit sequence
+    pull noblock          ; Get bit to write
+    jmp !osre, write_bit  ; Jump if data available
+    jmp 0                 ; Otherwise wait
+
+write_bit:
+    set pins, 0           ; Start write slot
+    jmp !x, write_0       ; Jump if bit is 0
+    set pins, 1 [3]       ; Write 1: short low pulse (60us/15 = 4)
+    set pins, 1 [3]       ; Wait for slot to complete (60us/15 = 4)
+    jmp 0                 ; Wait
+
+write_0:
+    set pins, 0 [3]       ; Write 0: long low pulse (60us/15 = 4)
+    set pins, 1 [3]       ; Short high (60us/15 = 4)
+    jmp 0                 ; Wait
+
+% c-sdk {
+static inline void onewire_program_init(PIO pio, uint sm, uint offset, uint pin) {
+    pio_sm_config c = onewire_program_get_default_config(offset);
+    
+    // Configure GPIO
+    sm_config_set_out_pins(&c, pin, 1);
+    sm_config_set_in_pins(&c, pin);
+    sm_config_set_set_pins(&c, pin, 1);
+    
+    // Configure clock divider for 15MHz (15us per instruction)
+    sm_config_set_clkdiv(&c, 8.33f);
+    
+    // Configure sideset
+    sm_config_set_sideset(&c, 1, false, false);
+    
+    // Set pin directions
+    pio_gpio_init(pio, pin);
+    pio_sm_set_consecutive_pindirs(pio, sm, pin, 1, true);
+    
+    // Load program and start
+    pio_sm_init(pio, sm, offset, &c);
+    pio_sm_set_enabled(pio, sm, true);
+}
+
+static inline bool onewire_reset(PIO pio, uint sm) {
+    // Clear FIFO
+    pio_sm_clear_fifos(pio, sm);
+    
+    // Trigger reset sequence
+    pio_sm_put_blocking(pio, sm, 0);
+    
+    // Wait for result
+    return !pio_sm_get_blocking(pio, sm);
+}
+
+static inline void onewire_write_bit(PIO pio, uint sm, bool bit) {
+    pio_sm_put_blocking(pio, sm, bit ? 1 : 0);
+}
+
+static inline bool onewire_read_bit(PIO pio, uint sm) {
+    // Clear FIFO first
+    pio_sm_clear_fifos(pio, sm);
+    
+    // Trigger read sequence
+    pio_sm_put_blocking(pio, sm, 0);
+    
+    // Wait for result
+    return pio_sm_get_blocking(pio, sm) != 0;
+}
+
+static inline void onewire_write_byte(PIO pio, uint sm, uint8_t byte) {
+    for (int i = 0; i < 8; i++) {
+        onewire_write_bit(pio, sm, byte & 1);
+        byte >>= 1;
+    }
+}
+
+static inline uint8_t onewire_read_byte(PIO pio, uint sm) {
+    uint8_t byte = 0;
+    for (int i = 0; i < 8; i++) {
+        byte >>= 1;
+        if (onewire_read_bit(pio, sm)) {
+            byte |= 0x80;
+        }
+    }
+    return byte;
+}
+%}
